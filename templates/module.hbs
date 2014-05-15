@@ -1,0 +1,322 @@
+<h1 class="api-module">{{name}} <small class="api-type">{{type}}</small></h1>
+
+<p class="api-description">{{description}}</p>
+
+{{#if requires}}
+	<h3 class="api-section api-requires">requires</h3>
+	<ul class="list-inline api-requires">
+		{{#each requires}}
+			<li>
+				<a {{#if href}}href="{{href}}"{{/if}} class="{{classes}}">{{name}}</a>
+			</li>
+		{{/each}}
+	</ul>
+{{/if}}
+
+<ul class="list-unstyled api-module-contents">
+	{{#each classes}}
+		<li>
+			<a class="api-anchor" id="{{type}}:{{name}}"></a>
+			<code id="{{name}}-class" class="api-code api-class"><strong>{{name}}(</strong><small>{{#each arguments}}<strong class="api-arg">{{#if @index}}, {{/if}}{{name}}</strong><small class="api-arg-type">:{{signatureComponent}}</small>{{/each}}</small><strong>)<small class="api-type"> class</small></strong></code>
+			<p class="api-description">
+				{{description}}
+			</p>
+			<p>
+				{{#if deprecated}}
+					<span class="label label-danger">deprecated</span>
+				{{/if}}
+				{{#if override}}
+					<span class="label label-warning">override</span>
+				{{/if}}
+				{{#if global}}
+					<span class="label label-default">global</span>
+				{{/if}}
+			</p>
+
+			{{#if hasSuperOrMixinsOrArgs}}
+				<div class="panel panel-default">
+					<dl class="panel-body">
+						{{#if extends}}
+							<dt><code class="api-term"><span class="api-class">extends</span></code></dt>
+							<dd class="api-description">
+								{{#if extends.href}}
+									<a href="{{extends.href}}">{{extends.name}}</a>
+								{{else}}
+									{{extends.name}}
+								{{/if}}
+							</dd>
+						{{/if}}
+						{{#if mixins}}
+							<dt><code class="api-term"><span class="api-class">mixins</span></code></dt>
+							<dd class="api-description">
+								<ul class="list-inline">
+									{{#each mixins}}
+										<li>
+											{{#if href}}
+												<a href="{{href}}">{{name}}</a>
+											{{else}}
+												{{name}}
+											{{/if}}
+										</li>
+									{{/each}}
+								</ul>
+							</dd>
+						{{/if}}
+						{{#each arguments}}
+							{{#if description}}
+								<dt>
+									<code class="api-term"><span class="api-class">{{name}}</span>
+										{{#if hasDefault}}
+											<small class="api-arg-type">defaults to {{default}}</small>
+										{{/if}}
+									</code>
+								</dt>
+								<dd class="api-description">
+									{{description}}
+									<dl>
+										{{#each properties}}
+											<dt>
+												<code class="api-term"><span class="api-class">{{@key}}<span class="api-arg-type">:{{type}}{{#unless required}}?{{/unless}}</span></span>
+													{{#if hasDefault}}
+														<span class="api-arg-type">defaults to {{default}}</span>
+													{{/if}}
+												</code>
+												<dd class="api-description">
+													{{description}}
+												</dd>
+											</dt>
+										{{/each}}
+									</dl>
+								</dd>
+							{{/if}}
+						{{/each}}
+					</dl>
+				</div>
+			{{/if}}
+
+			{{#if properties}}
+				<h3 class="api-section api-property">properties</h3>
+
+				<ul class="list-unstyled api-items">
+					{{#each properties}}
+						<li>
+							<a class="api-anchor" id="{{type}}:{{name}}"></a>
+							<code class="api-code api-property">
+								<strong>.{{@key}}</strong><small class="api-prop-type">:{{type}}</small>
+							</code>
+							<p class="api-description">
+								{{description}}
+							</p>
+						</li>
+					{{/each}}
+				</ul>
+			{{/if}}
+
+			{{#if staticMethods}}
+				<h3 class="api-section api-method">static methods</h3>
+
+				<ul class="list-unstyled api-items">
+					{{#each staticMethods}}
+						<li>
+							<a class="api-anchor" id="{{type}}:{{name}}"></a>
+							<code class="api-code api-method">
+								<strong>{{../name}}.{{name}}(</strong>{{#each arguments}}<strong class="api-arg">{{#if @index}}, {{/if}}{{name}}</strong><small class="api-arg-type">:{{signatureComponent}}</small>{{/each}}<strong>)</strong>
+								{{#if returns}}
+									<small class="api-arg-type">returns</small>
+									<strong>{{returns.name}}</strong><small class="api-arg-type">{{#if returns.name}}:{{/if}}{{returns.type}}</small>
+								{{/if}}
+							</code>
+							<p class="api-description">
+								{{description}}
+								{{#if returns.description}}
+									Returns {{returns.description}}
+								{{/if}}
+							</p>
+							<p>
+								{{#if deprecated}}
+									<span class="label label-danger">deprecated</span>
+								{{/if}}
+								{{#if override}}
+									<span class="label label-warning">override</span>
+								{{/if}}
+								{{#if shim}}
+									<span class="label label-success">shim</span>
+								{{/if}}
+							</p>
+							{{#if hasArgDescriptions}}
+								<div class="panel panel-default">
+									<dl class="panel-body">
+										{{#each arguments}}
+											{{#if description}}
+												<dt>
+													<code class="api-term"><span class="api-method">{{name}}</span>
+														{{#if hasDefault}}
+															<small class="api-arg-type">defaults to {{default}}</small>
+														{{/if}}
+													</code>
+												</dt>
+												<dd class="api-description">{{description}}</dd>
+											{{/if}}
+										{{/each}}
+									</dl>
+								</div>
+							{{/if}}
+						</li>
+					{{/each}}
+				</ul>
+			{{/if}}
+
+			{{#if methods}}
+				<h3 class="api-section api-method">methods</h3>
+
+				{{#if additionalMethods}}
+					<ul class="list-inline api-additional-methods">
+						{{#each additionalMethods}}
+							<li>
+								{{#if href}}
+									<a href="{{href}}">{{name}}</a>
+								{{else}}
+									{{name}}
+								{{/if}}
+							</li>
+						{{/each}}
+					</ul>
+				{{/if}}
+
+				<ul class="list-unstyled api-items">
+					{{#each methods}}
+						<li>
+							<a class="api-anchor" id="{{type}}:{{name}}"></a>
+							<code class="api-code api-method">
+								<strong>.{{name}}(</strong>{{#each arguments}}<strong class="api-arg">{{#if @index}}, {{/if}}{{name}}</strong><small class="api-arg-type">:{{signatureComponent}}</small>{{/each}}<strong>)</strong>
+								{{#if returns}}
+									<small class="api-arg-type">returns</small>
+									<strong>{{returns.name}}</strong><small class="api-arg-type">{{#if returns.name}}:{{/if}}{{returns.type}}</small>
+								{{/if}}
+							</code>
+							<p class="api-description">
+								{{description}}
+								{{#if returns.description}}
+									Returns {{returns.description}}
+								{{/if}}
+							</p>
+							<p>
+								{{#if deprecated}}
+									<span class="label label-danger">deprecated</span>
+								{{/if}}
+								{{#if override}}
+									<span class="label label-warning">override</span>
+								{{/if}}
+								{{#if shim}}
+									<span class="label label-success">shim</span>
+								{{/if}}
+							</p>
+							{{#if hasArgDescriptions}}
+								<div class="panel panel-default">
+									<dl class="panel-body">
+										{{#each arguments}}
+											{{#if description}}
+												<dt>
+													<code class="api-term"><span class="api-method">{{name}}</span>
+														{{#if hasDefault}}
+															<small class="api-arg-type">defaults to {{default}}</small>
+														{{/if}}
+													</code>
+												</dt>
+												<dd class="api-description">{{description}}</dd>
+											{{/if}}
+										{{/each}}
+									</dl>
+								</div>
+							{{/if}}
+						</li>
+					{{/each}}
+				</ul>
+			{{/if}}
+
+			{{#if events}}
+				<h3 class="api-section api-event">events</h3>
+
+				<ul class="list-unstyled api-items">
+					{{#each events}}
+						<li>
+							<a class="api-anchor" id="{{type}}:{{name}}"></a>
+							<code class="api-code api-event">
+								<strong>{{name}} (</strong>{{#each params}}<strong class="api-arg">{{#if @index}}, {{/if}}{{name}}</strong><small class="api-arg-type">:{{type}}</small>{{/each}}<strong>)</strong>
+							</code>
+							<p class="api-description">
+								{{#if after}}
+									After {{after}}.
+								{{/if}}
+								{{#if when}}
+									When {{when}}.
+								{{/if}}
+								{{#if before}}
+									Before {{before}}.
+								{{/if}}
+							</p>
+							<p class="api-description">
+								{{description}}
+							</p>
+						</li>
+					{{/each}}
+			{{/if}}
+		</li>
+	{{/each}}
+
+	{{#if functions}}
+		<li>
+			<h3 class="api-section api-function">functions</h3>
+			
+			<ul class="list-unstyled">
+				{{#each functions}}
+					<li>
+						<a class="api-anchor" id="{{type}}:{{name}}"></a>
+						<code class="api-code api-function">
+							<strong>{{name}}(</strong>{{#each arguments}}<strong class="api-arg">{{#if @index}}, {{/if}}{{name}}</strong><small class="api-arg-type">:{{signatureComponent}}</small>{{/each}}<strong>)</strong>
+							{{#if returns}}
+								<small class="api-arg-type">returns</small>
+								<strong>{{returns.name}}</strong><small class="api-arg-type">{{#if returns.name}}:{{/if}}{{returns.type}}</small>
+							{{/if}}
+						</code>
+						<p class="api-description">
+							{{description}}
+							{{#if returns.description}}
+								Returns {{returns.description}}
+							{{/if}}
+						</p>
+						<p>
+							{{#if deprecated}}
+								<span class="label label-danger">deprecated</span>
+							{{/if}}
+							{{#if override}}
+								<span class="label label-warning">override</span>
+							{{/if}}
+							{{#if shim}}
+								<span class="label label-success">shim</span>
+							{{/if}}
+						</p>
+						{{#if hasArgDescriptions}}
+							<div class="panel panel-default">
+								<dl class="panel-body">
+									{{#each arguments}}
+										{{#if description}}
+											<dt>
+												<code class="api-term"><span class="api-method">{{name}}</span>
+													{{#if hasDefault}}
+														<small class="api-arg-type">defaults to {{default}}</small>
+													{{/if}}
+												</code>
+											</dt>
+											<dd class="api-description">{{description}}</dd>
+										{{/if}}
+									{{/each}}
+								</dl>
+							</div>
+						{{/if}}
+					</li>
+				{{/each}}
+			</ul>
+		</li>
+	{{/if}}
+</ul>

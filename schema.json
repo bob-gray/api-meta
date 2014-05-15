@@ -1,0 +1,180 @@
+{
+	"description": "meta options argument",
+	"type": "object",
+	"oneOf": [
+		{"$ref": "module"},
+		{"$ref": "class"},
+		{"$ref": "method"}
+	],
+	"module": {
+		"type": "object",
+		"properties": {
+			"name": {
+				"type": "string",
+				"required": true
+			},
+			"type": {
+				"enum": [
+					"module"
+				],
+				"required": true
+			},
+			"exports": {
+				"type": "string"
+			},
+			"description": {
+				"type": "string"
+			}
+		}
+	},
+	"class": {
+		"type": "object",
+		"properties": {
+			"name": {
+				"type": "string",
+				"required": true
+			},
+			"type": {
+				"enum": [
+					"class"
+				],
+				"required": true
+			},
+			"extends": {
+				"type": "string"
+			},
+			"mixins": {
+				"type": [
+					"string",
+					"array"
+				],
+				"items": {
+					"type": "string"
+				}
+			},
+			"description": {
+				"type": "string"
+			},
+			"arguments": {
+				"type": "array",
+				"items": {
+					"$ref": "argument"
+				}
+			},
+			"properties": {
+				"type": "array",
+				"items": {
+					"$ref": "property"
+				}
+			}
+		}
+	},
+	"method": {
+		"type": "object",
+		"properties": {
+			"name": {
+				"type": "string",
+				"required": true
+			},
+			"type": {
+				"enum": [
+					"method"
+				],
+				"required": true
+			},
+			"for": {
+				"type": "string"
+			},
+			"description": {
+				"type": "string"
+			},
+			"static": {
+				"type": "boolean",
+				"default": false
+			},
+			"shim": {
+				"type": "boolean",
+				"default": false
+			},
+			"override": {
+				"type": "boolean",
+				"default": false
+			},
+			"signature": {
+				"type": "string"
+			},
+			"arguments": {
+				"type": "array",
+				"items": {
+					"$ref": "argument"
+				}
+			},
+			"returns": {
+				"oneOf": [{
+					"$ref": "nativeTypeName"
+				}, {
+					"type": "object",
+					"properties": {
+						"type": {
+							"$ref": "nativeTypeName"
+						},
+						"description": {
+							"type": "string"
+						}
+					}
+				}],
+				"default": "undefined"
+			}
+		}
+	},
+	"definitions": {
+		"argument": {
+			"type": "object",
+			"properties": [{
+				"name": {
+					"type": "string"
+				},
+				"type": {
+					"$ref": "nativeTypeName"
+				},
+				"description": {
+					"type": "string"
+				},
+				"required": {
+					"type": "boolean",
+					"default": true
+				},
+				"default": {}
+			}]
+		},
+		"property": {
+			"type": "object",
+			"properties": [{
+				"name": {
+					"type": "string"
+				},
+				"type": {
+					"$ref": "nativeTypeName"
+				},
+				"description": {
+					"type": "string"
+				},
+				"default": {}
+			}]
+		},
+		"nativeTypeName": {
+			"enum": [
+				"string",
+				"number",
+				"boolean",
+				"object",
+				"array",
+				"function",
+				"date",
+				"regex",
+				"null",
+				"undefined"
+			]
+		}
+	}
+}

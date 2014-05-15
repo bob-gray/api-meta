@@ -1,0 +1,12 @@
+<h4 class="api-modules">modules</h4>
+
+<ul class="nav api-module-links">
+	{{#recursiveList modules pathPrefix moduleName}}
+		<li class="{{classList}}">
+			<a {{#if link}}href="{{pathPrefix}}/modules/{{id}}.html"{{/if}}>{{name}}</a>
+			{{#if children}}
+				<ul class="nav api-module-links">{{{children}}}</ul>
+			{{/if}}
+		</li>
+	{{/recursiveList}}
+</ul>
