@@ -3,9 +3,11 @@
 require("solv/src/object/for-each");
 
 var meta = require("solv/src/meta"),
+	type = require("solv/src/type"),
 	createClass = require("solv/src/class"),
 	Reporter,
 	fs = require("fs"),
+	markdown = require("markdown").markdown,
 	templates = {
 		head: fs.readFileSync("./templates/head.hbs", "utf-8"),
 		list: fs.readFileSync("./templates/list.hbs", "utf-8"),
@@ -26,15 +28,19 @@ Reporter.method("render", function (module) {
 	var head = templates.head(module),
 		body = templates.module(module),
 
-		modules = templates.list({
+		moduleTree = templates.list({
 			pathPrefix: module.pathPrefix,
-			modules: module.project.modules,
+			moduleTree: module.project.moduleTree,
 			moduleName: module.name
 		}),
 
 		foot = templates.foot({
-			modules: modules
+			moduleTree: moduleTree
 		});
+
+	if (module.readme) {
+		body += markdown.toHTML(module.readme);
+	}
 
 	return head + body + foot;
 });
@@ -72,6 +78,72 @@ Handlebars.registerHelper("recursiveList", function recurse (items, pathPrefix, 
 		});
 	}).join("");
 });
+
+Handlebars.registerHelper("genericDocBlock", function (key, value, options) {
+	var markup = "";
+
+	if (!/name|type/.test(key)) {
+		markup += "<h4>"+ key +"</h4>";
+
+		if (type.is("object", value)) {
+			markup += "<table>";
+
+			Object.forEach(value, function (value, key) {
+				markup += "<tr><td>"+ key +"</td><td>"+ value +"</td></tr>";
+			});
+
+			markup += "</table>"
+
+		} else if (type.is("array", value)) {
+			markup += buildTable(value);
+
+		} else {
+			markup +="<p>"+ value +"</p>"
+		}
+	}
+
+	return markup;
+});
+
+function buildTable (array) {
+	var columns = Object.keys(array.reduce(getKeys, {})),
+		markup = "<table>";
+
+	markup += buildHeaderRow(columns);
+
+	array.forEach(function (data) {
+		markup += buildRow(columns, data);
+	});
+
+	markup += "</table>";
+
+	return markup;
+}
+
+function buildHeaderRow (columns) {
+	return "<tr>" + columns.reduce(buildTh, "") +"</tr>";
+}
+
+function buildRow (columns, data) {
+	return "<tr>"+ columns.reduce(buildTd.bind(data), "") +"</tr>";
+}
+
+function buildTd (row, column) {
+	return row +"<td>"+ (this[column] || "") +"</td>";
+}
+
+function buildTh (row, column) {
+	return row +"<th>"+ column +"</th>";
+}
+
+function getKeys (keys, object) {
+	return Object.keys(object).reduce(getKey, keys);
+}
+
+function getKey (keys, key) {
+	keys[key] = true;
+	return keys;
+}
 
 Object.forEach(templates, function (template, name) {
 	this[name] = Handlebars.compile(template);

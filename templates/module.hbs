@@ -319,4 +319,19 @@
 			</ul>
 		</li>
 	{{/if}}
+
+	{{#if others}}
+		<li>
+			<ul class="list-unstyled">
+				{{#each others}}
+					<li>
+						<h3 class="api-section api-function">{{name}}</h3>
+						{{#each this}}
+							{{#genericDocBlock @key this}}{{/genericDocBlock}}
+						{{/each}}
+					</li>
+				{{/each}}
+			</ul>
+		</li>
+	{{/if}}
 </ul>
