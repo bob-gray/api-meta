@@ -7,12 +7,13 @@ var meta = require("solv/src/meta"),
 	createClass = require("solv/src/class"),
 	Reporter,
 	fs = require("fs"),
+	path = require("path"),
 	markdown = require("markdown").markdown,
 	templates = {
-		head: fs.readFileSync("./templates/head.hbs", "utf-8"),
-		list: fs.readFileSync("./templates/list.hbs", "utf-8"),
-		foot: fs.readFileSync("./templates/foot.hbs", "utf-8"),
-		module: fs.readFileSync("./templates/module.hbs", "utf-8")
+		head: fs.readFileSync(path.join(__dirname, "../templates/head.hbs"), "utf-8"),
+		list: fs.readFileSync(path.join(__dirname, "../templates/list.hbs"), "utf-8"),
+		foot: fs.readFileSync(path.join(__dirname, "../templates/foot.hbs"), "utf-8"),
+		module: fs.readFileSync(path.join(__dirname, "../templates/module.hbs"), "utf-8")
 	},
 	Handlebars = require("handlebars");
 

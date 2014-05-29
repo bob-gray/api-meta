@@ -4,7 +4,8 @@ var createClass = require("solv/src/class"),
 	Project = require("./Project"),
 	madge = require("madge"),
 	eachSegment = /[^\/]+/g,
-	fs = require("fs");
+	fs = require("fs"),
+	path = require("path");
 
 var AMDProject = createClass({
 		name: "AMDProject",
@@ -14,14 +15,9 @@ var AMDProject = createClass({
 			type: "object"
 		}],
 		properties: {
-			root: {
-				type: "string",
-				"default": "./"
-			},
-			src: {
-				type: "string",
-				"default": "src"
-			},
+			basedir: "string",
+			readme: "string",
+			output: "string",
 			amd: {
 				type: "boolean",
 				"default": true
@@ -34,7 +30,9 @@ var AMDProject = createClass({
 module.exports = AMDProject;
 
 function init () {
-	this.dependencies = madge(this.root + this.src, {
+	this.src = path.join(this.basedir, "src");
+
+	this.dependencies = madge(this.src, {
 		format: "amd"
 	});
 
@@ -45,6 +43,6 @@ function toModule (name) {
 	return {
 		name: name,
 		pathPrefix: name.replace(eachSegment, ".."),
-		src: fs.readFileSync(this.root + this.src + name +".js", "utf-8")
+		src: fs.readFileSync(path.join(this.src, name +".js"), "utf-8")
 	};
 }
