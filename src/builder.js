@@ -75,12 +75,12 @@ function builder (options) {
 	function build () {
 		var reporter = new Reporter(),
 			readmePath,
-			homePage = reporter.render({
+			homePage = {
 				name: "",
 				type: "",
 				pathPrefix: ".",
 				project: project
-			}),
+			},
 			modulesDir = path.join(project.output, "modules");
 
 		if (project.readme) {
@@ -91,9 +91,9 @@ function builder (options) {
 			} catch (error) {
 				console.error("readme <%s> cannot be found", readmePath);
 			}
-		}
+		} 
 
-		fs.writeFileSync(path.join(project.output, "index.html"), homePage);
+		fs.writeFileSync(path.join(project.output, "index.html"), reporter.render(homePage));
 
 		project.modules.forEach(function (module) {
 			var docDir = path.join(modulesDir, module.name.replace(/\/[^\/]*$/, "")),
