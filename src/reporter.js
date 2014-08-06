@@ -36,6 +36,7 @@ Reporter.method("render", function (module) {
 		}),
 
 		foot = templates.foot({
+			pathPrefix: module.pathPrefix,
 			moduleTree: moduleTree
 		});
 

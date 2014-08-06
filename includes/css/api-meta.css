@@ -37,6 +37,7 @@ dl.panel-body {
 }
 .api-arg {
 	font-size: 95%;
+	color: #58D3E4;
 }
 .api-arg-type,
 .api-prop-type {
@@ -78,6 +79,10 @@ dl.panel-body {
 .api-additional-methods {
 	padding-left: 15px;
 	margin-bottom: 10px;
+}
+.api-src {
+	border-left-color: #346f42;
+	color: #346f42;
 }
 .api-function {
 	border-left-color: #a07494;
