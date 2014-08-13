@@ -1,6 +1,6 @@
 {
   "name": "api-meta",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "meta-json documentation page builder and JSON schemas for generating API documentation",
   "author": "Bob Gray <gray.bob98@gmail.com>",
   "main": "builder.js",
