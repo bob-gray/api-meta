@@ -27,7 +27,7 @@ Reporter = createClass(
 
 Reporter.method("render", function (module) {
 	var head = templates.head(module),
-		body = templates.module(module),
+		body,
 
 		moduleTree = templates.list({
 			pathPrefix: module.pathPrefix,
@@ -41,7 +41,9 @@ Reporter.method("render", function (module) {
 		});
 
 	if (module.readme) {
-		body += markdown.toHTML(module.readme);
+		body = markdown.toHTML(module.readme);
+	} else {
+		body = templates.module(module);
 	}
 
 	return head + body + foot;
